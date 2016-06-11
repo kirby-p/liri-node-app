@@ -24,7 +24,7 @@ if(command == "my-tweets"){
 			for(i = 0; i < 20; i++){
 				console.log(tweets[i].text);
 				console.log(tweets[i].created_at);
-				console.log("");
+				console.log("------------------------------------------------------");
 			}
 		}
 	});
@@ -33,14 +33,25 @@ if(command == "my-tweets"){
 else if(command == "spotify-this-song"){
 	console.log("down for some tunage");
 
-	spotify.search({type: "track", query: "tom sawyer"}, function(error, data){
+	if(!title){
+		title = "what's my age again";
+	}
+
+	spotify.search({type: "track", query: title}, function(error, data){
 		if(error){
 			console.log(error);
 		}
 		else{
-				console.log(data.tracks.items[0].name);
-				console.log(data.tracks.items[0].artists[0].name);
-				console.log(data.tracks.items[0].album.name);
+			console.log("");
+
+			for(i = 0; i < 20; i++){
+				console.log((i + 1)  + ".");
+				console.log("Artist(s): " + data.tracks.items[i].artists[0].name);
+				console.log("Song Name: " + data.tracks.items[i].name);
+				console.log("Preview URL: " + data.tracks.items[i].preview_url);
+				console.log("Album: " + data.tracks.items[i].album.name);
+				console.log("------------------------------------------------------");
+			}
 		}
 	});
 }
