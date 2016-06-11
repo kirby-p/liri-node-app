@@ -2,11 +2,28 @@ var keys = require("./keys.js");
 var twitter = require("twitter");
 var spotify = require("spotify");
 var request = require("request");
+var fs = require("fs");
 
 var command = process.argv[2];
 var title = process.argv[3];
 
-if(command == "my-tweets"){
+switch(command){
+	case "my-tweets":
+		tweets();
+		break;
+	case "spotify-this-song":
+		spotifySong();
+		break;
+	case "movie-this":
+		movie();
+		break;
+	case "do-what-it-says":
+		random();
+		break;
+}
+
+
+function tweets(){
 	console.log("tweet tweet");
 	var client = new twitter({
 		consumer_key: keys.twitterKeys.consumer_key,
@@ -31,7 +48,7 @@ if(command == "my-tweets"){
 	});
 }
 
-else if(command == "spotify-this-song"){
+function spotifySong(){
 	console.log("down for some tunage");
 
 	if(!title){
@@ -56,7 +73,7 @@ else if(command == "spotify-this-song"){
 		}
 	});
 }
-else if(command == "movie-this"){
+function movies(){
 	console.log("let's go to the movies, shawtay");
 
 	if(!title){
@@ -86,9 +103,29 @@ else if(command == "movie-this"){
 
 
 }
-else if(command == "do-what-it-says"){
+
+function random(){
 	console.log("just do what I say");
-}
-else{
-	console.log("try again");
+
+	fs.readFile("random.txt", "utf8", function(error, data){
+		if(error){
+			console.log(error);
+		}
+
+		data = data.split(",");
+		command = data[0];
+		title = data[1];
+
+		switch(command){
+			case "my-tweets":
+			tweets();
+			break;
+		case "spotify-this-song":
+			spotifySong();
+			break;
+		case "movie-this":
+			movie();
+			break;
+		}
+	})	
 }
