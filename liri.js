@@ -1,6 +1,7 @@
 var keys = require("./keys.js");
 var twitter = require("twitter");
 var spotify = require("spotify");
+var request = require("request");
 
 var command = process.argv[2];
 var title = process.argv[3];
@@ -57,6 +58,33 @@ else if(command == "spotify-this-song"){
 }
 else if(command == "movie-this"){
 	console.log("let's go to the movies, shawtay");
+
+	if(!title){
+		title = "mr nobody";
+	}
+
+	var queryUrl = 'http://www.omdbapi.com/?t=' + title +'&y=&plot=short&tomatoes=true&r=json';
+		
+	request(queryUrl, function (error, response, body) {
+
+	if(error){
+		console.log(error);
+	}
+
+	else{
+		console.log("Title: " + JSON.parse(body)["Title"]);
+		console.log("Year: " + JSON.parse(body)["Year"]);
+		console.log("IMDB Rating: " + JSON.parse(body)["imdbRating"]);
+		console.log("Country: " + JSON.parse(body)["Country"]);
+		console.log("Language: " + JSON.parse(body)["Language"]);
+		console.log("Plot: " + JSON.parse(body)["Plot"]);
+		console.log("Actors: " + JSON.parse(body)["Actors"]);
+		console.log("Rotten Tomatoes Rating: " + JSON.parse(body)["tomatoRating"]);
+		console.log("Rotten Tomatoes URL: " + JSON.parse(body)["tomatoURL"]);
+	}
+});
+
+
 }
 else if(command == "do-what-it-says"){
 	console.log("just do what I say");
